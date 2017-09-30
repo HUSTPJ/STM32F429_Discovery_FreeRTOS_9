@@ -28,7 +28,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
-<<<<<<< HEAD
 #include "queue.h"
 #include <stdio.h>
 #include <stdint.h>
@@ -36,71 +35,34 @@
 
 
 
-=======
->>>>>>> 3f3c47ab59919eca44e63ccd18456dfa1b01b949
-
-
-/** @addtogroup STM32F4_Discovery_Peripheral_Examples
-  * @{
-  */
-
-/** @addtogroup IO_Toggle
-  * @{
-  */ 
-
-/* Private typedef -----------------------------------------------------------*/
 GPIO_InitTypeDef  GPIO_InitStructure;
-<<<<<<< HEAD
+
 xQueueHandle MsgQueue;
-=======
->>>>>>> 3f3c47ab59919eca44e63ccd18456dfa1b01b949
 
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
 
-/* Private functions ---------------------------------------------------------*/
 void Hardware_Init(void);
 void Red_LED_On(void);
 void Red_LED_Off(void);
 void Green_LED_On(void);
 void Green_LED_Off(void);
-<<<<<<< HEAD
 void Sender_Task(void*);
 void Receiver_Task(void*);
 void Monitor_Task(void*);
-/**
-  * @brief  Main program
-  * @param  NonevTaskDelay(2/ portTICK_RATE_MS);
-  * @retval None
-  */
+
+
 uint32_t  SendNumPlus=0;
 uint32_t  RecNumPlus=0;
-=======
-void ToggleLED1_Task(void*);
-void ToggleLED2_Task(void*);
-/**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
->>>>>>> 3f3c47ab59919eca44e63ccd18456dfa1b01b949
+
+
+
 int main(void)
 {
-  /*!< At this stage the microcontroller clock setting is already configured, 
-       this is done through SystemInit() function which is called from startup
-       file (startup_stm32f4xx.s) before to branch to application main.
-       To reconfigure the default setting of SystemInit() function, refer to
-        system_stm32f4xx.c file
-     */
        Hardware_Init();
  
-       /* Init and start tracing*/
         vTraceEnable(TRC_INIT);
         vTraceEnable(TRC_START);
 
-<<<<<<< HEAD
+
        MsgQueue=xQueueCreate(500,sizeof(uint32_t));
 
        xTaskCreate(Sender_Task,
@@ -123,35 +85,12 @@ int main(void)
                    (void*) NULL,
                    tskIDLE_PRIORITY + 2UL,
                    NULL
-=======
-       /* Create tasks */
-       xTaskCreate(
-		  ToggleLED1_Task,                 /* Function pointer */
-		  "Task_LED1",                          /* Task name - for debugging only*/
-		  configMINIMAL_STACK_SIZE,         /* Stack depth in words */
-		  (void*) NULL,                     /* Pointer to tasks arguments (parameter) */
-		  tskIDLE_PRIORITY + 3UL,           /* Task priority*/
-		  NULL                              /* Task handle */
        );
 
-       xTaskCreate(
-		  ToggleLED2_Task,                 /* Function pointer */
-		  "Task_LED2",                          /* Task name - for debugging only*/
-		  configMINIMAL_STACK_SIZE,         /* Stack depth in words */
-		  (void*) NULL,                     /* Pointer to tasks arguments (parameter) */
-		  tskIDLE_PRIORITY + 2UL,           /* Task priority*/
-		  NULL                              /* Task handle */
->>>>>>> 3f3c47ab59919eca44e63ccd18456dfa1b01b949
-       );
-
-	/* Start the scheduler. */
+	
 	vTaskStartScheduler();
 
-	/* If all is well, the scheduler will now be running, and the following line
-	will never be reached.  If the following line does execute, then there was
-	insufficient FreeRTOS heap memory available for the idle and/or timer tasks
-	to be created.  See the memory management section on the FreeRTOS web site
-	for more details. */
+	
 	for( ;; );
 
 }
@@ -209,7 +148,7 @@ void Green_LED_Off(void)
 //    GPIO_ResetBits(GPIOG, GPIO_Pin_13);
     GPIOG->ODR &= 0xDFFF;
 }
-<<<<<<< HEAD
+
 
 
 void Sender_Task(void *pvParameters)
@@ -261,67 +200,6 @@ void Monitor_Task(void *pvParameters)
 
 
 
-
-=======
-/**
- * ToggleLED1_Task: Toggle LED1 via RTOS Timer
- */
-void ToggleLED1_Task(void *pvParameters)
-{
-    int led = 0;  
-
-    while (1) 
-    {
-        if(led == 0)
-        {
-            Red_LED_On();
-            led = 1;
-        } 
-        else
-        {
-            Red_LED_Off();
-            led = 0;
-         }
-        /*
-        Delay for a period of time. vTaskDelay() places the task into
-        the Blocked state until the period has expired.
-        The delay period is spacified in 'ticks'. We can convert
-        yhis in milisecond with the constant portTICK_RATE_MS.
-        */
-        vTaskDelay(1000 / portTICK_RATE_MS);
-  }
-}
-
-/**
- * ToggleLED2_Task: Toggle LED2 via RTOS Timer
- */
-void ToggleLED2_Task(void *pvParameters)
-
-{
-    int led = 0;  
-    while (1) 
-    {
-        if(led == 0)
-        {
-            Green_LED_On();
-            led = 1;
-        } 
-        else
-        {
-            Green_LED_Off();
-            led = 0;
-         }
-        /*
-        Delay for a period of time. vTaskDelay() places the task into
-        the Blocked state until the period has expired.
-        The delay period is spacified in 'ticks'. We can convert
-        yhis in milisecond with the constant portTICK_RATE_MS.
-        */
-        vTaskDelay(2000 / portTICK_RATE_MS);
-  }
-}
-
->>>>>>> 3f3c47ab59919eca44e63ccd18456dfa1b01b949
 void vApplicationTickHook( void )
 {
 }
